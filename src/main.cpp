@@ -6,6 +6,8 @@
  * @author Greg Heiman
  * @since 2022-03-20
  */
+#include <iostream>
+
 #include "lib.hpp"
 
 int main()
