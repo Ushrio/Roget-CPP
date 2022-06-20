@@ -7,7 +7,7 @@
 #include <iostream>
 
 #include "lib.hpp"
-#include "lib/algorithms/naive.cpp"
+#include "lib/algorithms/naive.hpp"
 
 Guess::Guess(std::string word, std::array<Correctness, 5> mask) : word( word ), mask( mask ) {};
 
@@ -27,7 +27,7 @@ std::array<Correctness, 5> check(std::string answer, std::string guess)
     std::array<Correctness, 5> c;
 
     // Mark characters as to wether they are correct or not
-    for (int i = 0; i < 5; ++i)
+    for (int i = 0; i < 5; i++)
     {
         char a = answer[i];
         char g = guess[i];
@@ -59,54 +59,9 @@ size_t play(std::string answer, Guesser* G)
         {
             return i;
         }
-
         std::array<Correctness, 5> correctness = check(answer, guess);
         history.push_back(Guess(guess, correctness));
     }
 
     return -1;
 }
-
-void make_hash_map_from_dictionary(std::unordered_map<std::string, int>& map, std::string filepath)
-{
-    std::ifstream file;
-    file.open(filepath);
-    if (!file.is_open())
-    {
-        std::cerr << "Could not open file located at " << filepath << " exiting program" << std::endl;
-    }
-
-    std::string word;
-    int frequency;
-    while (file >> word >> frequency)
-    {
-        map.insert(std::make_pair(word, frequency));
-    }
-}
-
-bool cmp(std::pair<std::string, int>& a, std::pair<std::string, int>& b)
-{
-    return a.second < b.second;
-}
-
-void sort_map_by_frequency(std::unordered_map<std::string, int>& map)
-{
-    std::vector<std::pair<std::string, int> > a;
-    std::unordered_map<std::string, int> m;
-
-    for (auto& it : map)
-    {
-        a.push_back(it);
-    }
-
-    sort(a.begin(), a.end(), cmp);
-
-    for (auto& it : a)
-    {
-        m.insert(it);
-    }
-
-    map = m;
-}
-
-#endif

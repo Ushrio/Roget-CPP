@@ -1,12 +1,15 @@
 #ifndef _NAIVE_H
 #define _NAIVE_H
 
-#include <unordered_map>
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include <utility>
 
 #include "../../include/Guesser.hpp"
+
+using freq_matrix = std::vector<std::pair<std::string, int> >;
 
 class Naive : public Guesser
 {
@@ -17,11 +20,11 @@ public:
 
     std::string guess(std::vector<Guess>& history) override;
 
-    void make_hash_map(std::unordered_map<std::string, int>& map, std::string filepath);
+    void fill_freq_matrix(freq_matrix& vec, std::string filepath);
 
-    std::unordered_map<std::string, int> sort_map(std::unordered_map<std::string, int>& map);
+    void sort_freq_matrix(freq_matrix& map);
 
-    std::unordered_map<std::string, int> m_freq_hash_map;
+    freq_matrix m_freq_matrix;
     std::array<Correctness, 5> m_mask;
 };
 

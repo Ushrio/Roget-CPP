@@ -12,16 +12,22 @@
 #include <string>
 #include <vector>
 #include <cmath>
-#include <ctime>
 #include <algorithm>
 #include <iterator>
+#include <ctime>
 
 #include "lib.hpp"
-#include "lib/algorithms/naive.cpp"
 #include "lib/algorithms/naive.hpp"
 
 #define NUM_OF_WORDS_TO_LOAD 32
 
+/**
+ * Open the answers file and load a certain amount of answers.
+ *
+ * @param filepath the filepath to the answers text file.
+ * @param words_to_load the amount of words to load
+ * @return an std::vector<std::string> with all of the loaded answers.
+ */
 std::vector<std::string> open_answers(std::string filepath, int words_to_load)
 {
     std::ifstream file;
@@ -36,7 +42,7 @@ std::vector<std::string> open_answers(std::string filepath, int words_to_load)
     // Retrieve a random set of words from the answers text file
     unsigned int line_count = std::count(std::istreambuf_iterator<char>(file),
                                          std::istreambuf_iterator<char>(), '\n');
-    std::srand(std::time(nullptr));
+    std::srand(time(0));
     std::vector<std::string> words;
     for (int i = 0; i < words_to_load; i++)
     {
@@ -63,13 +69,13 @@ int main()
     words = open_answers("answers.txt", NUM_OF_WORDS_TO_LOAD);
 
     Naive *G = new Naive();
-    make_hash_map_from_dictionary(G->m_freq_hash_map, "dictionary.txt");
-    sort_map_by_frequency(G->m_freq_hash_map);
 
     for (std::string s : words)
     {
+        G->fill_freq_matrix(G->m_freq_matrix, "dictionary.txt");
         size_t guesses = play(s, G);
         std::cout << guesses << std::endl;
+        std::cout << "The correct answer was " << s << std::endl;
     }
     return 0;
 }
