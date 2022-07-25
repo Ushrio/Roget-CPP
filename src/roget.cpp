@@ -73,9 +73,19 @@ int main()
     for (std::string s : words)
     {
         G->fill_freq_matrix(G->m_freq_matrix, "dictionary.txt");
-        size_t guesses = play(s, G);
-        std::cout << guesses << std::endl;
-        std::cout << "The correct answer was " << s << std::endl;
+        int guesses = play(s, G);
+        if (guesses < 0)
+        {
+            std::cout << "Did not guess the correct answer. An error occured." << std::endl;
+            std::cout << "The correct answer was " << s << std::endl;
+            break;
+        }
+        else
+        {
+            std::cout << guesses << std::endl;
+            std::cout << "The correct answer was " << s << std::endl;
+            break;
+        }
     }
     return 0;
 }

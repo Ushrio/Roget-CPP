@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iostream>
 
+#include "include/Correctness.hpp"
 #include "lib.hpp"
 #include "lib/algorithms/naive.hpp"
 
@@ -35,7 +36,7 @@ std::array<Correctness, 5> check(std::string answer, std::string guess)
         {
             c[i] = Correctness::Correct;
         }
-        else if (guess.find(a) != std::string::npos) // Mark the character yellow (Misplaced)
+        else if (answer.find(g) != std::string::npos) // Mark the character yellow (Misplaced)
         {
             c[i] = Correctness::Misplaced;
         }
@@ -45,18 +46,25 @@ std::array<Correctness, 5> check(std::string answer, std::string guess)
         }
     }
 
+    std::cout << answer << " " << guess;
+    for (Correctness m : c)
+    {
+        std::cout << " " << m;
+    }
+    std::cout << std::endl;
     return c;
 }
 
-size_t play(std::string answer, Guesser* G)
+int play(std::string answer, Guesser* G)
 {
     std::vector<Guess> history;
 
-    for (size_t i = 1; i < 32; ++i) // Wordle only allows 6 guesses. But for stats purposes we allow more.
+    for (int i = 1; i < 100; ++i) // Wordle only allows 6 guesses. But for stats purposes we allow more.
     {
         std::string guess = G->guess(history);
         if (guess == answer)
         {
+            std::cout << guess << std::endl;
             return i;
         }
         std::array<Correctness, 5> correctness = check(answer, guess);
